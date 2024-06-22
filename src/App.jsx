@@ -7,6 +7,7 @@ import axios from "axios";
 import Db from "./components/database/db";
 import Services from "./components/services/Services";
 import CompanyInfo from "./components/company/company";
+import Orders from "./components/orders/Orders";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/db" element={<Db />} />
           <Route path="/services" element={<Services />} />
           <Route path="/company" element={<CompanyInfo />} />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </BrowserRouter>
     </>
