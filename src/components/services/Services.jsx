@@ -2,38 +2,41 @@ import "./Services.css";
 import { useEffect, useState } from "react";
 import NormalBtn from "../butttons/Normal/NormalBtn";
 import FormComponent from "../form/form";
-import Input from "../form/input/Input";
+// import Input from "../form/input/Input";
 import * as Yup from "yup";
 
 const Services = () => {
   const [selected, setSelected] = useState("services");
   const [checkedServices, setCheckedServices] = useState([]);
+  const [ourServices, setOurServices] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  const ourServices = [
-    {
-      title: "طراحی وبسایت شرکتی",
-      price: 50000000,
-    },
-    {
-      title: "ادمین اینستاگرام",
-      price: 1000000,
-    },
-    {
-      title: "سازنده ویدیو",
-      price: 2000000,
-    },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/api/services")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => setOurServices(data))
+      .catch((error) => console.error("Error fetching services:", error));
+  }, []);
 
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleCheck = (id) => {
-    setCheckedServices((prevCheckedServices) =>
-      prevCheckedServices.includes(id)
-        ? prevCheckedServices.filter((serviceId) => serviceId !== id)
-        : [...prevCheckedServices, id]
-    );
+  const handleCheck = (id, price) => {
+    setCheckedServices((prevCheckedServices) => {
+      if (prevCheckedServices.includes(id)) {
+        setTotalPrice(totalPrice - price);
+        return prevCheckedServices.filter((serviceId) => serviceId !== id);
+      } else {
+        setTotalPrice(totalPrice + price);
+        return [...prevCheckedServices, id];
+      }
+    });
   };
 
   const Service = ({ title, price, id }) => {
@@ -58,7 +61,7 @@ const Services = () => {
           <input
             type="checkbox"
             checked={checkedServices.includes(id)}
-            onChange={() => handleCheck(id)}
+            onChange={() => handleCheck(id, price)}
             id={`cbx-46-${id}`}
             className="inp-cbx"
           />
@@ -77,7 +80,7 @@ const Services = () => {
   const ServicesWrapper = () => {
     return (
       <div>
-        <ul className="relative top-40 bg-background-elm2 w-fit rounded-3xl right-[50%] translate-x-[50%] pt-0.5 pb-0.5">
+        <ul className="relative h-60 overflow-auto top-40 bg-background-elm2 w-fit rounded-3xl right-[50%] translate-x-[50%] pt-0.5 pb-0.5">
           {ourServices.map((service, index) => (
             <Service
               key={index}
@@ -87,7 +90,7 @@ const Services = () => {
             />
           ))}
         </ul>
-        <div className="absolute flex-col bg-background-elm2  text-background-white p-6 rounded-2xl top-[27rem] flex justify-between w-80 items-center right-[50%] translate-x-[50%]">
+        <div className="absolute flex-col bg-background-elm2  text-background-white p-6 rounded-2xl top-[27rem] flex justify-between w-96 items-center right-[50%] translate-x-[50%]">
           <section className="flex justify-between items-center w-full">
             <div className="flex">
               <i className="fi fi-tr-binary-circle-check ml-2"></i>
@@ -101,7 +104,7 @@ const Services = () => {
               <i className="fi fi-tr-usd-circle ml-2"></i>
               <h5>قیمت نهایی</h5>
             </div>
-            <h5>700,000,000</h5>
+            <h5>{formatPrice(totalPrice)} تومان</h5>
           </section>
         </div>
         <div className="absolute top-[37rem] right-[50%] translate-x-[50%]">
