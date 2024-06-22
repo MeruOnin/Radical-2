@@ -61,7 +61,7 @@ const Register = () => {
       .then((response) => {
         if (response.data.success) {
           // اگر ثبت‌نام موفقیت‌آمیز بود، به صفحه مورد نظر هدایت شوید
-          navigate("/next-page");
+          navigate("/services");
         } else {
           // اگر ثبت‌نام ناموفق بود، پیغام خطا نمایش داده شود
           console.error("Registration failed");

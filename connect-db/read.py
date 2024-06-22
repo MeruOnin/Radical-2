@@ -11,7 +11,7 @@ conn = pyodbc.connect(
     'SERVER=DESKTOP-NL7MQT0;'
     'DATABASE=radical;'
     'UID=sa;'
-    'PWD=@Hossein2021/'
+    'PWD=@Hossein2021'
 )
 
 @app.route('/api/check_code', methods=['POST'])

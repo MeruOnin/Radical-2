@@ -3,7 +3,7 @@ import pyodbc
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # اجازه دادن به همه منابع برای همه مسیرها
 
 # تنظیمات اتصال به SQL Server
 conn = pyodbc.connect(
@@ -28,7 +28,7 @@ def register_user():
     lastName = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
 
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO user_profile (name, lastName, phone_number, email, national_code) VALUES (?, ?, ?, ?, ?)', 
+    cursor.execute('INSERT INTO user_profile (name, last_name, phone_number, email, national_code) VALUES (?, ?, ?, ?, ?)', 
                    (name, lastName, phonenumber, email, nationalcode))
     conn.commit()
     
