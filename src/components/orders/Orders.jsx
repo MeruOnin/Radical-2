@@ -15,19 +15,30 @@ const Orders = () => {
   const ordersValue = [
     {
       title: "سفارش 1",
-      date: "1403/04/02",
+      date: "1403/04/03",
       loginCode: "12345",
       discount: "A781dj",
       orgPrice: 1200000,
       lastPrice: 1000000,
+      tracking: 12344812
     },
     {
       title: "سفارش 2",
-      date: "1403/04/03",
+      date: "1403/06/12",
       loginCode: "67890",
       discount: "B123cd",
       orgPrice: 1500000,
       lastPrice: 1300000,
+      tracking: 99391816
+    },
+    {
+      title: "سفارش 3",
+      date: "1404/01/29",
+      loginCode: "98765",
+      discount: "O2984J",
+      orgPrice: 3400000,
+      lastPrice: 3000000,
+      tracking: 12345678
     },
   ];
 
@@ -53,11 +64,6 @@ const Orders = () => {
             </span>
           </section>
           <i className="fa-solid fa-circle-check text-green-700 text-3xl"></i>
-          <section className="flex flex-col">
-            <span className="bg-green-950 text-green-500 border-2 border-green-500 p-2 rounded-full m-0.5">
-              {date}
-            </span>
-          </section>
         </li>
         {detailsShow[index] && (
           <div className="order-details show">
@@ -79,12 +85,11 @@ const Orders = () => {
   };
 
   const OrderDetails = ({ order }) => {
-    const { loginCode, discount, orgPrice, lastPrice } = order;
+    const { loginCode, discount, orgPrice, lastPrice, date, tracking } = order;
     const detailsValues = [
       {
         title: "کد ورود",
         detail: loginCode,
-        border: 1,
         icon: (
           <i className="fi fi-tr-binary-circle-check text-2xl text-background-elm flex justify-center items-center"></i>
         ),
@@ -92,7 +97,6 @@ const Orders = () => {
       {
         title: "کد تخفیف",
         detail: discount,
-        border: 1,
         icon: (
           <i className="fi fi-tr-badge-percent text-2xl text-background-elm flex justify-center items-center"></i>
         ),
@@ -100,7 +104,6 @@ const Orders = () => {
       {
         title: "قیمت اصلی",
         detail: formatPrice(orgPrice),
-        border: 1,
         icon: (
           <i className="fi fi-tr-usd-circle text-2xl text-background-elm flex justify-center items-center"></i>
         ),
@@ -108,11 +111,16 @@ const Orders = () => {
       {
         title: "قیمت نهایی",
         detail: formatPrice(lastPrice),
-        border: 0,
         icon: (
           <i className="fi fi-tr-file-invoice-dollar text-2xl text-background-elm flex justify-center items-center"></i>
         ),
       },
+      {
+        title: "تاریخ",
+        detail: date,
+        icon: <i className="fi fi-tr-calendar-lines text-2xl text-background-elm flex justify-center items-center"></i>
+      },
+      
     ];
 
     return (
