@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
+import axios from "axios";
 import Header from "../header/Header";
 import FormComponent from "../form/form";
 import NormalBtn from "../butttons/Normal/NormalBtn";
 import BingForm from "../form/BigForm";
 import BigInput from "../form/input/BigInput";
-import { validateYupSchema } from "formik";
 
 const CompanyInfo = () => {
   const [isChecked, setIsChecked] = useState([]);
+  const [selectedFile, setSelectedFile] = useState("No file chosen");
 
   const InfoTemplate = ({ title, inputs, desc, descDisplay }) => {
     return (
@@ -31,21 +32,11 @@ const CompanyInfo = () => {
 
   const inputFieldes = [
     [
-      {
-        title: "لوگو",
-      },
-      {
-        title: "شعار",
-      },
-      {
-        title: "رنگ",
-      },
-      {
-        title: "المان های شخصیتی",
-      },
-      {
-        title: "تبلیغات ",
-      },
+      { title: "لوگو" },
+      { title: "شعار" },
+      { title: "رنگ" },
+      { title: "المان های شخصیتی" },
+      { title: "تبلیغات " },
     ],
     [
       {
@@ -133,7 +124,7 @@ const CompanyInfo = () => {
         title: "استراتژی بازاریابی",
         name: "strategy",
         type: "text",
-        idationSchema: Yup.string().required("این فیلد اجباری است"),
+        validationSchema: Yup.string().required("این فیلد اجباری است"),
         initialValue: "",
       },
     ],
@@ -160,7 +151,7 @@ const CompanyInfo = () => {
         />
         <label
           htmlFor={id}
-          className={` text-background-white border-1 transition-all duration-200 hover:border-background-elm w-fit p-4 cursor-pointer rounded-xl ${
+          className={`text-background-white border-1 transition-all duration-200 hover:border-background-elm w-fit p-4 cursor-pointer rounded-xl ${
             isChecked.includes(id)
               ? "border-background-elm bg-background-elm"
               : "bg-background-elm2 border-background-elm2"
@@ -175,8 +166,8 @@ const CompanyInfo = () => {
   const HistoryOfCompany = () => {
     return (
       <InfoTemplate
-        title={`سابقه شرکت`}
-        desc={`کدوم یکی از موارد زیر رو برای محصول تون از قبل انجام دادید؟`}
+        title="سابقه شرکت"
+        desc="کدوم یکی از موارد زیر رو برای محصول تون از قبل انجام دادید؟"
         inputs={
           <ul className="flex justify-center flex-wrap mt-4 items-center">
             {inputFieldes[0].map((option, index) => (
@@ -196,8 +187,8 @@ const CompanyInfo = () => {
     return (
       <div className="relative top-10">
         <InfoTemplate
-          title={`مشخصات شرکت`}
-          descDisplay={`hidden`}
+          title="مشخصات شرکت"
+          descDisplay="hidden"
           inputs={
             <ul>
               <FormComponent inputs={inputFieldes[1]} />
@@ -212,8 +203,8 @@ const CompanyInfo = () => {
     return (
       <>
         <InfoTemplate
-          title={`مختصات محصول`}
-          desc={`به سوالات زیر پاسخ ترجیحا کوتاه یا متوسط بدهید.`}
+          title="مختصات محصول"
+          desc="به سوالات زیر پاسخ ترجیحا کوتاه یا متوسط بدهید."
           inputs={<BingForm inputs={inputFieldes[2]} />}
         />
       </>
@@ -224,24 +215,22 @@ const CompanyInfo = () => {
     return (
       <>
         <InfoTemplate
-          title={`استراتژی بازاریابی شما`}
+          title="استراتژی بازاریابی شما"
           inputs={<BingForm inputs={inputFieldes[3]} />}
-          desc={`هر مورد که بالا نمی شد توضیح بدید،در کنار بازاریابیتون بنویسید.`}
+          desc="هر مورد که بالا نمی شد توضیح بدید،در کنار بازاریابیتون بنویسید."
         />
       </>
     );
   };
 
   const PdfInput = () => {
-    const [selectedFile, setSelectedFile] = useState("No file chosen");
-
     return (
       <InfoTemplate
-        title={`ارسال پی دی اف`}
-        desc={`یک فایل پی دی اف حاوی اطلاعات مورد نیاز ارسال کنید`}
+        title="ارسال پی دی اف"
+        desc="یک فایل پی دی اف حاوی اطلاعات مورد نیاز ارسال کنید"
         inputs={
           <form>
-            <div class="flex flex-row items-center justify-evenly m-4">
+            <div className="flex flex-row items-center justify-evenly m-4">
               <input
                 type="file"
                 id="custom-input"
@@ -249,39 +238,111 @@ const CompanyInfo = () => {
                 hidden
               />
               <label
-                for="custom-input"
-                class="block text-sm text-background-org mr-4 py-2 px-4
+                htmlFor="custom-input"
+                className="block text-sm text-background-org mr-4 py-2 px-4
               rounded-md border-0 font-semibold bg-background-elm
               hover:bg-background-white transition-all duration-200 cursor-pointer"
               >
                 <i className="fa-solid fa-paperclip ml-2"></i>
                 انتخاب فایل
               </label>
-              <label class="text-sm text-background-elm">{selectedFile}</label>
+              <label className="text-sm text-background-elm">{selectedFile}</label>
             </div>
           </form>
         }
       />
     );
   };
+  
+  const [formData, setFormData] = useState({
+    companyname: '',
+    yearofbi: '',
+    sizeofcompany: '',
+    address: '',
+    startedwork: '',
+    eyework: '',
+    website: '',
+    productimportant: '',
+    strongers: '',
+    theenemy: '',
+    forcustomers: '',
+    strategy: ''
+  });
+  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // جلوگیری از عملکرد پیش‌فرض فرم
+  
+    try {
+      const companyInfo = {
+        ID_loginCode: localStorage.getItem('entercode'),
+        logo: isChecked.includes("option-1"),
+        color: isChecked.includes("option-3"),
+        slogan: isChecked.includes("option-2"),
+        personal_element: isChecked.includes("option-4"),
+        publicity: isChecked.includes("option-5"),
+      };
+  
+      const productCoordinates = {
+        ID_loginCode: localStorage.getItem('entercode'),
+        mostPart_product: formData.productimportant,
+        strongPart_product: formData.strongers,
+        mostCompetitor_company: formData.theenemy,
+        bestPerformance_product: formData.forcustomers,
+        more_strategy: formData.strategy,
+      };
+  
+      const informationCompany = {
+        ID_loginCode: localStorage.getItem('entercode'),
+        name: formData.companyname,
+        year: formData.yearofbi,
+        size: formData.sizeofcompany,
+        address: formData.address,
+        startedWork_market: formData.startedwork,
+        future_market: formData.eyework,
+        website: formData.website,
+      };
+  
+      // Submit company info
+      await axios.post("http://localhost:5000/api/company_history", companyInfo);
+  
+      // Submit product coordinates
+      await axios.post("http://localhost:5000/api/product_coordinates", productCoordinates);
+  
+      // Submit company information
+      await axios.post("http://localhost:5000/api/information_company", informationCompany);
+  
+      // Handle file upload
+      if (selectedFile !== "No file chosen") {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        await axios.post("http://localhost:5000/api/uploadpdf", formData);
+      }
+  
+      alert("اطلاعات با موفقیت ارسال شد");
+    } catch (error) {
+      console.error("Error submitting data: ", error);
+      alert("خطایی در ارسال اطلاعات رخ داد");
+    }
+  };
+  
 
   return (
     <div className="rounded-3xl p-4 max-w-100 w-fit flex flex-col justify-center items-center absolute top-[30%] left-[50%] translate-x-[-50%] translate-y-[-10%]">
       <Header
-        title={`رادیکال`}
-        desc={`سابقه خود را در فعالیت شرکت های مختلف بنویسید`}
+        title="رادیکال"
+        desc="سابقه خود را در فعالیت شرکت های مختلف بنویسید"
         content={
-          <>
+          <form onSubmit={handleSubmit}>
             <HistoryOfCompany />
-            {/* <CompanyInformation /> */}
             <ProductCoordinates />
             <Strategy />
             <PdfInput />
             <FormComponent
               inputs={inputFieldes[1]}
-              btn={<NormalBtn title={`ثبت اطلاعات`} />}
+              btn={<NormalBtn title="ثبت اطلاعات" />}
             />
-          </>
+          </form>
         }
       />
     </div>
