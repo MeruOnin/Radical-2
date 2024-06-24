@@ -116,28 +116,28 @@ const EnterCodes = () => {
         {
             title: "19456",
             userLimit: 60,
-            currentUsers: 0,
+            currentUsers: 60,
             dateLimit: "1403/04/13",
             canEdit: false
         },
         {
             title: "12345",
             userLimit: 10,
-            currentUsers: 0,
+            currentUsers: 5,
             dateLimit: "1403/06/03",
             canEdit: false
         },
         {
             title: "76835",
             userLimit: 7,
-            currentUsers: 0,
+            currentUsers: 1,
             dateLimit: "1403/12/01",
             canEdit: false
         },
         {
             title: "95334",
             userLimit: 25,
-            currentUsers: 0,
+            currentUsers: 20,
             dateLimit: "1403/04/05",
             canEdit: false
         },

@@ -2,16 +2,21 @@ import "./Services.css";
 import { useEffect, useState } from "react";
 import NormalBtn from "../butttons/Normal/NormalBtn";
 import FormComponent from "../form/form";
-// import Input from "../form/input/Input";
 import * as Yup from "yup";
 
+
+
 const Services = () => {
+  const [discount, setDiscount] = useState(0);
+  const [discountError, setDiscountError] = useState('');
   const [selected, setSelected] = useState("services");
   const [checkedServices, setCheckedServices] = useState([]);
   const [ourServices, setOurServices] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [entryCode, setEntryCode] = useState("");
 
   useEffect(() => {
+    // Fetch services from API
     fetch("http://localhost:5000/api/services")
       .then((response) => {
         if (!response.ok) {
@@ -21,6 +26,14 @@ const Services = () => {
       })
       .then((data) => setOurServices(data))
       .catch((error) => console.error("Error fetching services:", error));
+  }, []);
+
+  useEffect(() => {
+    // Read entry code from localStorage
+    const storedEntryCode = localStorage.getItem("entercode");
+    if (storedEntryCode) {
+      setEntryCode(storedEntryCode);
+    }
   }, []);
 
   const formatPrice = (price) => {
@@ -47,8 +60,7 @@ const Services = () => {
             checkedServices.includes(id)
               ? "bg-background-elm border-background-elm"
               : "bg-background-org text-background-white border-background-org hover:border-background-elm"
-          }
-        `}
+          }`}
       >
         <div>
           <h4>{title}</h4>
@@ -96,7 +108,7 @@ const Services = () => {
               <i className="fi fi-tr-binary-circle-check ml-2"></i>
               <h5>کد ورود</h5>
             </div>
-            <h5>45971</h5>
+            <h5>{entryCode}</h5>
           </section>
           <span className="w-10 h-[.2rem] rounded-full bg-background-elm mt-5 mb-5" />
           <section className="flex justify-between items-center w-full">
@@ -104,14 +116,38 @@ const Services = () => {
               <i className="fi fi-tr-usd-circle ml-2"></i>
               <h5>قیمت نهایی</h5>
             </div>
-            <h5>{formatPrice(totalPrice)} تومان</h5>
+            <h5>{formatPrice(totalPrice - discount)} تومان</h5>
           </section>
+
         </div>
         <div className="absolute top-[37rem] right-[50%] translate-x-[50%]">
-          <NormalBtn title={`پرداخت`} path={`/`} />
+          <NormalBtn title={"پرداخت"} path={"/"} />
         </div>
       </div>
     );
+  };
+
+  const applyDiscount = (values) => {
+    fetch("http://localhost:5000/api/check_discount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ discount_code: values.discountcode }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.discount_price) {
+          setDiscount(data.discount_price);
+          setDiscountError('');
+        } else {
+          setDiscountError(data.error || 'Error applying discount');
+        }
+      })
+      .catch((error) => {
+        console.error("Error applying discount:", error);
+        setDiscountError('Error applying discount');
+      });
   };
 
   const Toggle = () => {
@@ -165,22 +201,24 @@ const Services = () => {
       name: "discountcode",
       type: "text",
       validationSchema: Yup.string()
-        .matches(/^\d{5}$/, "لطفا کد پنج رقمی وارد کنید")
+        .matches(/^\d{7}$/, "لطفا کد هفت رقمی وارد کنید")
         .required("این فیلد اجباری است"),
       initialValue: "",
     },
   ];
 
-  const DiscountCode = () => {
-    return (
-      <div className="relative top-[10rem]">
-        <FormComponent
-          inputs={componentInputs}
-          btn={<NormalBtn title={`اعمال`} />}
-        />
-      </div>
-    );
-  };
+const DiscountCode = () => {
+  return (
+    <div className="relative top-[10rem]">
+      <FormComponent
+        inputs={componentInputs}
+        btn={<NormalBtn title={"اعمال"} />}
+        onSubmit={applyDiscount}
+      />
+      {discountError && <p className="text-red-500">{discountError}</p>}
+    </div>
+  );
+};
 
   return (
     <>

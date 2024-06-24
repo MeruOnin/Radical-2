@@ -26,7 +26,7 @@ const Start = () => {
   const handleSubmit = (values) => {
     const { entercode } = values;
 
-    const convertValue = JSON.stringify(values);
+    const convertValue = JSON.stringify(values.entercode);
     localStorage.setItem("entercode", convertValue);
 
     axios
