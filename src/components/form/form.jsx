@@ -9,7 +9,7 @@ const FormComponent = ({ inputs, btn, onSubmit }) => {
     inputs.reduce((acc, input) => {
       acc[input.name] = input.validationSchema;
       return acc;
-    }, {})
+    }, {}),
   );
 
   const initialValues = inputs.reduce((acc, input) => {
@@ -27,6 +27,7 @@ const FormComponent = ({ inputs, btn, onSubmit }) => {
     >
       {() => (
         <Form className="w-full max-w-sm mx-auto flex flex-col items-center">
+          {/* eslint-disable-next-line react/prop-types */}
           {inputs.map((input, index) => (
             <div key={index}>
               <Input title={input.title} name={input.name} type={input.type} />

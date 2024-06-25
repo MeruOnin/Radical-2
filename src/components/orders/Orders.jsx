@@ -20,7 +20,7 @@ const Orders = () => {
       discount: "A781dj",
       orgPrice: 1200000,
       lastPrice: 1000000,
-      tracking: 12344812
+      tracking: 12344812,
     },
     {
       title: "سفارش 2",
@@ -29,7 +29,7 @@ const Orders = () => {
       discount: "B123cd",
       orgPrice: 1500000,
       lastPrice: 1300000,
-      tracking: 99391816
+      tracking: 99391816,
     },
     {
       title: "سفارش 3",
@@ -38,7 +38,7 @@ const Orders = () => {
       discount: "O2984J",
       orgPrice: 3400000,
       lastPrice: 3000000,
-      tracking: 12345678
+      tracking: 12345678,
     },
   ];
 
@@ -118,9 +118,10 @@ const Orders = () => {
       {
         title: "تاریخ",
         detail: date,
-        icon: <i className="fi fi-tr-calendar-lines text-2xl text-background-elm flex justify-center items-center"></i>
+        icon: (
+          <i className="fi fi-tr-calendar-lines text-2xl text-background-elm flex justify-center items-center"></i>
+        ),
       },
-      
     ];
 
     return (

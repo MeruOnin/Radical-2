@@ -134,7 +134,7 @@ const CompanyInfo = () => {
     setIsChecked((prevChecked) =>
       prevChecked.includes(id)
         ? prevChecked.filter((checkedId) => checkedId !== id)
-        : [...prevChecked, id]
+        : [...prevChecked, id],
     );
   };
 
@@ -246,54 +246,55 @@ const CompanyInfo = () => {
                 <i className="fa-solid fa-paperclip ml-2"></i>
                 انتخاب فایل
               </label>
-              <label className="text-sm text-background-elm">{selectedFile}</label>
+              <label className="text-sm text-background-elm">
+                {selectedFile}
+              </label>
             </div>
           </form>
         }
       />
     );
   };
-  
+
   const [formData, setFormData] = useState({
-    companyname: '',
-    yearofbi: '',
-    sizeofcompany: '',
-    address: '',
-    startedwork: '',
-    eyework: '',
-    website: '',
-    productimportant: '',
-    strongers: '',
-    theenemy: '',
-    forcustomers: '',
-    strategy: ''
+    companyname: "",
+    yearofbi: "",
+    sizeofcompany: "",
+    address: "",
+    startedwork: "",
+    eyework: "",
+    website: "",
+    productimportant: "",
+    strongers: "",
+    theenemy: "",
+    forcustomers: "",
+    strategy: "",
   });
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // جلوگیری از عملکرد پیش‌فرض فرم
-  
+
     try {
       const companyInfo = {
-        ID_loginCode: localStorage.getItem('entercode'),
+        ID_loginCode: localStorage.getItem("entercode"),
         logo: isChecked.includes("option-1"),
         color: isChecked.includes("option-3"),
         slogan: isChecked.includes("option-2"),
         personal_element: isChecked.includes("option-4"),
         publicity: isChecked.includes("option-5"),
       };
-  
+
       const productCoordinates = {
-        ID_loginCode: localStorage.getItem('entercode'),
+        ID_loginCode: localStorage.getItem("entercode"),
         mostPart_product: formData.productimportant,
         strongPart_product: formData.strongers,
         mostCompetitor_company: formData.theenemy,
         bestPerformance_product: formData.forcustomers,
         more_strategy: formData.strategy,
       };
-  
+
       const informationCompany = {
-        ID_loginCode: localStorage.getItem('entercode'),
+        ID_loginCode: localStorage.getItem("entercode"),
         name: formData.companyname,
         year: formData.yearofbi,
         size: formData.sizeofcompany,
@@ -302,30 +303,38 @@ const CompanyInfo = () => {
         future_market: formData.eyework,
         website: formData.website,
       };
-  
+
       // Submit company info
-      await axios.post("http://localhost:5000/api/company_history", companyInfo);
-  
+      await axios.post(
+        "http://localhost:5000/api/company_history",
+        companyInfo,
+      );
+
       // Submit product coordinates
-      await axios.post("http://localhost:5000/api/product_coordinates", productCoordinates);
-  
+      await axios.post(
+        "http://localhost:5000/api/product_coordinates",
+        productCoordinates,
+      );
+
       // Submit company information
-      await axios.post("http://localhost:5000/api/information_company", informationCompany);
-  
+      await axios.post(
+        "http://localhost:5000/api/information_company",
+        informationCompany,
+      );
+
       // Handle file upload
       if (selectedFile !== "No file chosen") {
         const formData = new FormData();
         formData.append("file", selectedFile);
         await axios.post("http://localhost:5000/api/uploadpdf", formData);
       }
-  
+
       alert("اطلاعات با موفقیت ارسال شد");
     } catch (error) {
       console.error("Error submitting data: ", error);
       alert("خطایی در ارسال اطلاعات رخ داد");
     }
   };
-  
 
   return (
     <div className="rounded-3xl p-4 max-w-100 w-fit flex flex-col justify-center items-center absolute top-[30%] left-[50%] translate-x-[-50%] translate-y-[-10%]">

@@ -37,8 +37,8 @@ const Input = ({ title, type, ...props }) => {
           meta.touched && meta.error
             ? "-top-3 text-sm text-background-elm bg-background-org"
             : isLabelShrunk
-            ? "-top-3 text-sm text-background-elm bg-background-org"
-            : "top-3 text-background-elm2"
+              ? "-top-3 text-sm text-background-elm bg-background-org"
+              : "top-3 text-background-elm2"
         }`}
       >
         {meta.touched && meta.error ? meta.error : title}

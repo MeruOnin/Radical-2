@@ -16,17 +16,17 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 7px; 
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background-org
+  @apply bg-background-org;
 }
 
 ::-webkit-scrollbar-thumb {
-@apply bg-background-elm2 rounded-full
+  @apply bg-background-elm2 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-background: #303030;
+  background: #303030;
 }

@@ -10,7 +10,7 @@ const BingForm = ({ inputs, btn, onSubmit }) => {
     inputs.reduce((acc, input) => {
       acc[input.name] = input.validationSchema;
       return acc;
-    }, {})
+    }, {}),
   );
 
   const initialValues = inputs.reduce((acc, input) => {

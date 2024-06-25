@@ -4,11 +4,9 @@ import NormalBtn from "../butttons/Normal/NormalBtn";
 import FormComponent from "../form/form";
 import * as Yup from "yup";
 
-
-
 const Services = () => {
   const [discount, setDiscount] = useState(0);
-  const [discountError, setDiscountError] = useState('');
+  const [discountError, setDiscountError] = useState("");
   const [selected, setSelected] = useState("services");
   const [checkedServices, setCheckedServices] = useState([]);
   const [ourServices, setOurServices] = useState([]);
@@ -118,7 +116,6 @@ const Services = () => {
             </div>
             <h5>{formatPrice(totalPrice - discount)} تومان</h5>
           </section>
-
         </div>
         <div className="absolute top-[37rem] right-[50%] translate-x-[50%]">
           <NormalBtn title={"پرداخت"} path={"/"} />
@@ -139,14 +136,14 @@ const Services = () => {
       .then((data) => {
         if (data.discount_price) {
           setDiscount(data.discount_price);
-          setDiscountError('');
+          setDiscountError("");
         } else {
-          setDiscountError(data.error || 'Error applying discount');
+          setDiscountError(data.error || "Error applying discount");
         }
       })
       .catch((error) => {
         console.error("Error applying discount:", error);
-        setDiscountError('Error applying discount');
+        setDiscountError("Error applying discount");
       });
   };
 
@@ -207,18 +204,18 @@ const Services = () => {
     },
   ];
 
-const DiscountCode = () => {
-  return (
-    <div className="relative top-[10rem]">
-      <FormComponent
-        inputs={componentInputs}
-        btn={<NormalBtn title={"اعمال"} />}
-        onSubmit={applyDiscount}
-      />
-      {discountError && <p className="text-red-500">{discountError}</p>}
-    </div>
-  );
-};
+  const DiscountCode = () => {
+    return (
+      <div className="relative top-[10rem]">
+        <FormComponent
+          inputs={componentInputs}
+          btn={<NormalBtn title={"اعمال"} />}
+          onSubmit={applyDiscount}
+        />
+        {discountError && <p className="text-red-500">{discountError}</p>}
+      </div>
+    );
+  };
 
   return (
     <>

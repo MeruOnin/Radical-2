@@ -1,9 +1,7 @@
 import AdminHeader from "../header/Header";
 
 const HeaderOrders = () => {
-    return ( 
-        <AdminHeader />
-    );
-}
- 
+  return <AdminHeader />;
+};
+
 export default HeaderOrders;
