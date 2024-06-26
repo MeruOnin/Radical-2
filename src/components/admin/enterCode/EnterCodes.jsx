@@ -4,7 +4,7 @@ import AdminHeader from "../header/Header";
 import EnterCode from "../elements/EnterCode";
 import ContextMenu from "../elements/ContextMenu";
 
-const OfferCodes = () => {
+const EnterCodes = () => {
   const [selected, setSelected] = useState("actives");
   const [contextMenu, setContextMenu] = useState({
     visible: false,
@@ -15,29 +15,29 @@ const OfferCodes = () => {
 
   const enterCodesValues = [
     {
-      title: "A532l",
-      userLimit: 100,
+      title: "19456",
+      userLimit: 60,
       currentUsers: 60,
       dateLimit: "1403/04/13",
       canEdit: false,
     },
     {
-      title: "MK099",
-      userLimit: 25,
-      currentUsers: 10,
+      title: "12345",
+      userLimit: 10,
+      currentUsers: 1,
       dateLimit: "1403/06/03",
       canEdit: false,
     },
     {
-      title: "T77TY",
-      userLimit: 50,
+      title: "76835",
+      userLimit: 7,
       currentUsers: 3,
       dateLimit: "1403/12/01",
       canEdit: false,
     },
     {
-      title: "RAR43",
-      userLimit: 20,
+      title: "95334",
+      userLimit: 25,
       currentUsers: 20,
       dateLimit: "1403/04/05",
       canEdit: false,
@@ -83,7 +83,7 @@ const OfferCodes = () => {
         first={`actives`}
         secend={`new`}
         firstTitle={`کد های فعال`}
-        secendTitle={`کد تخفیف جدید`}
+        secendTitle={`کد جدید`}
         top={100}
         onToggle={(value) => setSelected(value)}
       />
@@ -117,4 +117,4 @@ const OfferCodes = () => {
   );
 };
 
-export default OfferCodes;
+export default EnterCodes;

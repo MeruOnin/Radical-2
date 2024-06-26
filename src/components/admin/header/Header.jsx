@@ -9,12 +9,14 @@ const HeaderLink = ({ title, link, icon }) => {
         to={link}
         className={({ isActive }) =>
           isActive
-            ? "text-background-white bg-[#35363A] afterStyle w-36 block rounded-xl text-center p-2"
-            : "text-background-white w-36 block rounded-full text-center p-2"
+            ? "text-background-white bg-[#35363A] afterStyle w-40 block rounded-xl text-center p-2"
+            : "text-background-white w-40 block rounded-full text-center p-2"
         }
       >
-        {icon}
-        {title}
+        <div className="flex justify-between items-center">
+          {icon}
+          {title}
+        </div>
       </NavLink>
     </li>
   );
@@ -33,27 +35,27 @@ const AdminHeader = () => {
       title: "کد های تخفیف",
       link: "/admin/offer-codes",
       icon: (
-        <i className="fi fi-sr-binary-circle-check flex items-center justify-center"></i>
+        <i className="fi fi-sr-badge-percent flex items-center justify-center"></i>
       ),
     },
     {
       title: "سفارشات",
       link: "/admin/orders",
       icon: (
-        <i className="fi fi-sr-binary-circle-check flex items-center justify-center"></i>
+        <i class="fi fi-sr-order-history flex items-center justify-center"></i>
       ),
     },
     {
       title: "خدمات",
       link: "/admin/services",
       icon: (
-        <i className="fi fi-sr-binary-circle-check flex items-center justify-center"></i>
+        <i className="fi fi-sr-customer-care flex items-center justify-center"></i>
       ),
     },
   ];
 
   return (
-    <header className="backdrop-blur-xl fixed flex p-2 items-center justify-between w-full">
+    <header className="backdrop-blur-xl z-40 fixed flex p-2 items-center justify-between w-full">
       <nav className="flex items-center justify-between">
         <div class="flex items-center gap-x-1.5 mx-2.5">
           <i class="w-2 h-2 bg-red-500 rounded-full"></i>
