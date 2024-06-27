@@ -1,3 +1,4 @@
+import React from "react";
 import NormalBtn from "../butttons/Normal/NormalBtn";
 import FormComponent from "../form/form";
 import * as Yup from "yup";
@@ -60,7 +61,9 @@ const Register = () => {
       })
       .then((response) => {
         if (response.data.success) {
-          // اگر ثبت‌نام موفقیت‌آمیز بود، به صفحه مورد نظر هدایت شوید
+          // ذخیره ID کاربر در لوکال استوریج
+          localStorage.setItem("userId", response.data.id);
+          // هدایت به صفحه مورد نظر
           navigate("/services");
         } else {
           // اگر ثبت‌نام ناموفق بود، پیغام خطا نمایش داده شود

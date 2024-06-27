@@ -118,7 +118,7 @@ const Services = () => {
           </section>
         </div>
         <div className="absolute top-[37rem] right-[50%] translate-x-[50%]">
-          <NormalBtn title={"پرداخت"} path={"/"} />
+          <NormalBtn title={"پرداخت"} path={"/orders"} />
         </div>
       </div>
     );

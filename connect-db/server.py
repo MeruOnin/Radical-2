@@ -8,10 +8,10 @@ CORS(app, resources={r"/*": {"origins": "*"}})  # اضافه کردن CORS با 
 # تنظیمات اتصال به SQL Server
 conn = pyodbc.connect(
     'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=DESKTOP-NL7MQT0;'
+    'SERVER=DESKTOP-KAQD1TM;'
     'DATABASE=radical;'
     'UID=sa;'
-    'PWD=@Hossein2021'
+    'PWD=@Hossein2023'
 )
 
 @app.route('/api/check_code', methods=['POST'])
@@ -32,10 +32,10 @@ def check_code():
 def get_services():
     conn = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=DESKTOP-NL7MQT0;'
+        'SERVER=DESKTOP-KAQD1TM;'
         'DATABASE=radical;'
         'UID=sa;'
-        'PWD=@Hossein2021'
+        'PWD=@Hossein2023'
     )
     cursor = conn.cursor()
     cursor.execute("SELECT name, price FROM services")
@@ -55,10 +55,10 @@ def services():
 def check_discount_code(code):
     conn = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=DESKTOP-NL7MQT0;'
+        'SERVER=DESKTOP-KAQD1TM;'
         'DATABASE=radical;'
         'UID=sa;'
-        'PWD=@Hossein2021'
+        'PWD=@Hossein2023'
     )
     cursor = conn.cursor()
     cursor.execute("SELECT offer_price FROM offer_code WHERE ID=?", code)
@@ -83,10 +83,10 @@ def check_discount():
 
 conn = pyodbc.connect(
     'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=DESKTOP-NL7MQT0;'
+    'SERVER=DESKTOP-KAQD1TM;'
     'DATABASE=radical;'
     'UID=sa;'
-    'PWD=@Hossein2021'
+    'PWD=@Hossein2023'
 )
 
 @app.route('/api/register', methods=['POST'])
@@ -103,13 +103,16 @@ def register_user():
     lastName = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
 
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO user_profile (name, last_name, phone_number, email, national_code) VALUES (?, ?, ?, ?, ?)', 
-                   (name, lastName, phonenumber, email, nationalcode))
+    cursor.execute('''
+        INSERT INTO user_profile (name, last_name, phone_number, email, national_code) 
+        OUTPUT INSERTED.id 
+        VALUES (?, ?, ?, ?, ?)
+    ''', (name, lastName, phonenumber, email, nationalcode))
+    
+    inserted_id = cursor.fetchone()[0]
     conn.commit()
     
-    return jsonify({'success': True})
-
-
+    return jsonify({'success': True, 'id': inserted_id})
 
 
 if __name__ == '__main__':
