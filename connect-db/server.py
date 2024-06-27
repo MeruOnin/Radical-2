@@ -27,7 +27,7 @@ def check_code():
         return jsonify({'exists': True})
     else:
         return jsonify({'exists': False})
-    
+ #-------------------------------------------------------------------------   
 
 def get_services():
     conn = pyodbc.connect(
@@ -38,7 +38,7 @@ def get_services():
         'PWD=@Hossein2023'
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT name, price FROM services")
+    cursor.execute("SELECT ID, name, price FROM services")
     services = cursor.fetchall()
     conn.close()
     return services
@@ -47,7 +47,7 @@ def get_services():
 def services():
     try:
         services = get_services()
-        services_list = [{'title': service[0], 'price': service[1]} for service in services]
+        services_list = [{'id': service[0], 'title': service[1], 'price': service[2]} for service in services]
         return jsonify(services_list)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -66,7 +66,6 @@ def check_discount_code(code):
     conn.close()
     return discount
 
-
 @app.route('/api/check_discount', methods=['POST'])
 def check_discount():
     data = request.get_json()
@@ -79,8 +78,8 @@ def check_discount():
             return jsonify({'error': 'Invalid discount code'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+#-------------------------------------------------------------------------------
     
-
 conn = pyodbc.connect(
     'DRIVER={ODBC Driver 17 for SQL Server};'
     'SERVER=DESKTOP-KAQD1TM;'
@@ -113,6 +112,7 @@ def register_user():
     conn.commit()
     
     return jsonify({'success': True, 'id': inserted_id})
+#-------------------------------------------------------------------------------
 
 
 if __name__ == '__main__':
